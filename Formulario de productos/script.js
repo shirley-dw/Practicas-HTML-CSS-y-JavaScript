@@ -1,6 +1,6 @@
-const formLoginHTML = document.getElementById('formulario');
+const formularioHTML = document.getElementById('formulario');
 
-function validarTitulo(titulo) {
+ function validarTitulo(titulo) {
   return titulo.length > 6;
 }
 
@@ -18,16 +18,15 @@ function validaStock(stock) {
 
 function validaCodigo(codigo) {
   return Boolean(codigo) && codigo.includes("#");
-}
-
-function obtenerValidacion(validar) {
+} 
+ function obtenerValidacion(validar) {
   let dato = prompt(validar.mensaje);
   while (!validar.validacion(dato)) {
     dato = prompt(validar.error);
   }
   return dato;
 }
-
+ 
 const VALIDACION = {
   TITULO: {
     mensaje: "Ingrese un título",
@@ -55,7 +54,7 @@ const VALIDACION = {
     validacion: validaCodigo
   }
 };
-formLoginHTML.addEventListener('submit', (event) => {
+formularioHTML.addEventListener('submit', (event) => {
     event.preventDefault();
     console.log('Se envió el formulario');
     const formulario = event.target;
