@@ -1,10 +1,10 @@
-// HTML Elements
+/* board, scoreBoard, startButton, gameOverSign: Elementos HTML que se utilizan en el juego. */
 const board = document.getElementById('board');
 const scoreBoard = document.getElementById('scoreBoard');
 const startButton = document.getElementById('start');
 const gameOverSign = document.getElementById('gameOver');
 
-// Game settings
+/* boardSize, gameSpeed: Configuración del juego (tamaño del tablero y velocidad del juego). */
 const boardSize = 10;
 const gameSpeed = 100;
 const squareTypes = {
@@ -19,7 +19,7 @@ const directions = {
     ArrowLeft: -1,
 };
 
-// Game variables
+// Variables del juego 
 let snake;
 let score;
 let direction;
@@ -27,6 +27,7 @@ let boardSquares;
 let emptySquares;
 let moveInterval;
 
+/* drawSnake(): Dibuja la serpiente en el tablero, llamando a drawSquare para cada cuadrado de la serpiente. */
 const drawSnake = () => {
     snake.forEach( square => drawSquare(square, 'snakeSquare'));
 }
@@ -35,6 +36,9 @@ const drawSnake = () => {
 // @params 
 // square: posicion del cuadrado,
 // type: tipo de cuadrado (emptySquare, snakeSquare, foodSquare)
+
+/* drawSquare(square, type): Dibuja un cuadrado en el tablero con el tipo especificado (emptySquare, snakeSquare, foodSquare).
+ Actualiza la matriz boardSquares y el elemento HTML correspondiente. */
 const drawSquare = (square, type) => {
     const [ row, column ] = square.split('');
     boardSquares[row][column] = squareTypes[type];
@@ -49,7 +53,8 @@ const drawSquare = (square, type) => {
         }
     }
 }
-
+/* moveSnake(): Mueve la serpiente en la dirección actual, verificando si ha chocado con el borde o consigo misma.
+ Si es así, llama a gameOver(). */
 const moveSnake = () => {
     const newSquare = String(
         Number(snake[snake.length - 1]) + directions[direction])
@@ -74,23 +79,25 @@ const moveSnake = () => {
         drawSnake();
     }
 }
-
+/* addFood(): Aumenta la puntuación y crea un nuevo cuadrado de comida en el tablero. */
 const addFood = () => {
     score++;
     updateScore();
     createRandomFood();
 }
 
+/* gameOver(): Muestra el mensaje de "Game Over" y detiene el juego. */
 const gameOver = () => {
     gameOverSign.style.display = 'block';
     clearInterval(moveInterval)
     startButton.disabled = false;
 }
-
+/* setDirection(newDirection): Establece la dirección actual de la serpiente. */
 const setDirection = newDirection => {
     direction = newDirection;
 }
 
+/* directionEvent(key): Maneja los eventos de teclado para cambiar la dirección de la serpiente. */
 const directionEvent = key => {
     switch (key.code) {
         case 'ArrowUp':
@@ -108,15 +115,17 @@ const directionEvent = key => {
     }
 }
 
+/* createRandomFood(): Crea un nuevo cuadrado de comida en un lugar aleatorio del tablero. */
 const createRandomFood = () => {
     const randomEmptySquare = emptySquares[Math.floor(Math.random() * emptySquares.length)];
     drawSquare(randomEmptySquare, 'foodSquare');
 }
-
+/* updateScore(): Actualiza la puntuación en el tablero. */
 const updateScore = () => {
     scoreBoard.innerText = score;
 }
 
+/* createBoard(): Crea el tablero, creando elementos HTML para cada cuadrado y llenando la array boardSquares. */
 const createBoard = () => {
     boardSquares.forEach( (row, rowIndex) => {
         row.forEach( (column, columnndex) => {
@@ -130,6 +139,7 @@ const createBoard = () => {
     })
 }
 
+/* setGame(): Inicializa el juego, estableciendo la serpiente, puntuación, dirección y tablero. */
 const setGame = () => {
     snake = ['00', '01', '02', '03'];
     score = snake.length;
@@ -141,6 +151,7 @@ const setGame = () => {
     createBoard();
 }
 
+/* startGame(): Inicializa el juego, llamando a setGame() y configurando los eventos de teclado y el intervalo de movimiento. */
 const startGame = () => {
     setGame();
     gameOverSign.style.display = 'none';
@@ -152,4 +163,6 @@ const startGame = () => {
     moveInterval = setInterval( () => moveSnake(), gameSpeed);
 }
 
+/* startButton.addEventListener('click', startGame):
+ Asigna el evento de clic al botón de inicio, que llama a startGame() cuando se hace clic. */
 startButton.addEventListener('click', startGame);
